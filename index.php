@@ -13,6 +13,7 @@ function save_data($file, $data) {
 }
 
 $message = '';
+$errors = [];
 
 // Handle delete
 if (isset($_GET['delete'])) {
@@ -26,20 +27,31 @@ if (isset($_GET['delete'])) {
 // Handle POST (create)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $payload = $_POST;
-    // Basic normalization: ensure arrays for grouped fields
-    $record = [];
-    foreach ($payload as $k => $v) {
-        // trim strings
-        if (is_string($v)) $v = trim($v);
-        $record[$k] = $v;
-    }
-    $record['id'] = uniqid('p', true);
-    $record['created_at'] = date('c');
+    // Validation: require some key fields before saving
+    $errors = [];
+    if (empty(trim($payload['full_name'] ?? ''))) $errors[] = 'Full name is required.';
+    if (empty(trim($payload['team_name'] ?? ''))) $errors[] = 'Team name is required.';
+    if (empty(trim($payload['position'] ?? ''))) $errors[] = 'Position is required.';
+    if (!isset($payload['jersey']) || trim((string)$payload['jersey']) === '') $errors[] = 'Jersey number is required.';
 
-    $all = load_data($dataFile);
-    $all[] = $record;
-    save_data($dataFile, $all);
-    $message = 'Saved successfully.';
+    if (count($errors) === 0) {
+        // Basic normalization: ensure arrays for grouped fields
+        $record = [];
+        foreach ($payload as $k => $v) {
+            // trim strings
+            if (is_string($v)) $v = trim($v);
+            $record[$k] = $v;
+        }
+        $record['id'] = uniqid('p', true);
+        $record['created_at'] = date('c');
+
+        $all = load_data($dataFile);
+        $all[] = $record;
+        save_data($dataFile, $all);
+        $message = 'Saved successfully.';
+        // clear POST so the form resets (optional)
+        $_POST = [];
+    }
 }
 
 $records = load_data($dataFile);
@@ -112,6 +124,7 @@ function e($v) { return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
 
         .actions a{margin-right:8px}
         .msg{padding:10px;background:#fff8e1;border:1px solid #ffe29a;margin-bottom:12px;color:#6a4b00}
+        .error{padding:10px;background:#ffecec;border:1px solid #ffb3b3;margin-bottom:12px;color:#6a1200}
 
         /* Responsive tweaks */
         @media (max-width:900px){.row{flex-direction:column}.small{width:100%}}
@@ -126,6 +139,15 @@ function e($v) { return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
             <div class="subtitle">Roster & game logs</div>
         </div>
     </div>
+    <?php if (!empty($errors)): ?>
+        <div class="error"><strong>Please fix the following:</strong>
+            <ul>
+            <?php foreach ($errors as $err): ?>
+                <li><?php echo e($err); ?></li>
+            <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
     <?php if ($message): ?><div class="msg"><?php echo e($message); ?></div><?php endif; ?>
 
     <form method="post">
@@ -133,20 +155,34 @@ function e($v) { return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
             <legend>1. Player Information</legend>
             <div class="row">
                 <div class="col"><label>Player ID</label><input name="player_id" type="text"></div>
-                <div class="col"><label>Full Name</label><input name="full_name" type="text"></div>
+                <div class="col"><label>Full Name</label><input name="full_name" type="text" required value="<?php echo e($_POST['full_name'] ?? ''); ?>"></div>
                 <div class="col small"><label>Age</label><input name="age" type="number" min="0"></div>
                 <div class="col small"><label>Date of Birth</label><input name="dob" type="date"></div>
             </div>
             <div class="row">
-                <div class="col small"><label>Nationality</label><input name="nationality" type="text"></div>
+                <div class="col small"><label>Nationality</label><input name="nationality" type="text" value="<?php echo e($_POST['nationality'] ?? ''); ?>"></div>
                 <div class="col small"><label>Height</label><input name="height" type="text" placeholder="e.g., 1.82m"></div>
                 <div class="col small"><label>Preferred Hand</label>
                     <select name="preferred_hand"><option value="Right">Right</option><option value="Left">Left</option></select>
                 </div>
                 <div class="col small"><label>Position</label>
-                    <select name="position"><option>QB</option><option>RB</option><option>WR</option><option>TE</option><option>OL</option><option>DL</option><option>LB</option><option>CB</option><option>S</option><option>K</option><option>P</option></select>
+                    <select name="position" required>
+                        <option value="">-- select --</option>
+                        <?php $selPos = $_POST['position'] ?? ''; ?>
+                        <option value="QB" <?php echo ($selPos==='QB')? 'selected':''; ?>>QB</option>
+                        <option value="RB" <?php echo ($selPos==='RB')? 'selected':''; ?>>RB</option>
+                        <option value="WR" <?php echo ($selPos==='WR')? 'selected':''; ?>>WR</option>
+                        <option value="TE" <?php echo ($selPos==='TE')? 'selected':''; ?>>TE</option>
+                        <option value="OL" <?php echo ($selPos==='OL')? 'selected':''; ?>>OL</option>
+                        <option value="DL" <?php echo ($selPos==='DL')? 'selected':''; ?>>DL</option>
+                        <option value="LB" <?php echo ($selPos==='LB')? 'selected':''; ?>>LB</option>
+                        <option value="CB" <?php echo ($selPos==='CB')? 'selected':''; ?>>CB</option>
+                        <option value="S" <?php echo ($selPos==='S')? 'selected':''; ?>>S</option>
+                        <option value="K" <?php echo ($selPos==='K')? 'selected':''; ?>>K</option>
+                        <option value="P" <?php echo ($selPos==='P')? 'selected':''; ?>>P</option>
+                    </select>
                 </div>
-                <div class="col small"><label>Jersey Number</label><input name="jersey" type="number" min="0"></div>
+                <div class="col small"><label>Jersey Number</label><input name="jersey" type="number" min="0" required value="<?php echo e($_POST['jersey'] ?? ''); ?>"></div>
             </div>
         </fieldset>
 
@@ -154,7 +190,7 @@ function e($v) { return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
             <legend>2. Team Information</legend>
             <div class="row">
                 <div class="col small"><label>Team ID</label><input name="team_id" type="text"></div>
-                <div class="col"><label>Team Name</label><input name="team_name" type="text"></div>
+                <div class="col"><label>Team Name</label><input name="team_name" type="text" required value="<?php echo e($_POST['team_name'] ?? ''); ?>"></div>
                 <div class="col small"><label>League</label><input name="league" type="text"></div>
                 <div class="col small"><label>Country</label><input name="team_country" type="text"></div>
             </div>
