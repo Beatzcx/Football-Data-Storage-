@@ -54,24 +54,78 @@ function e($v) { return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Football Data Storage</title>
     <style>
-        body{font-family:Arial,Helvetica,sans-serif;margin:20px;background:#f6f8fa}
-        .container{max-width:1100px;margin:0 auto;background:#fff;padding:20px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-        fieldset{margin-bottom:16px;padding:12px}
-        legend{font-weight:bold}
-        label{display:block;margin:6px 0 2px;font-size:13px}
-        input[type=text],input[type=number],input[type=date],select,textarea{width:100%;padding:8px;border:1px solid #ccd;box-sizing:border-box;border-radius:4px}
+        /* Page (American football / gridiron) */
+        :root{--turf:#19692b;--turf-2:#1f7b34;--helmet:#c56a1c;--gold:#ffd24d;--muted:#6c6c6c}
+        body{font-family:Arial,Helvetica,sans-serif;margin:20px;background:linear-gradient(#e9eef2,#e6f1ea);}
+
+        /* Container looks like a pitch card */
+        .container{max-width:1200px;margin:0 auto;background:linear-gradient(180deg,#ffffff, #fbfdf9);padding:18px;border-radius:10px;box-shadow:0 6px 24px rgba(5,20,10,0.12);border:1px solid rgba(0,0,0,0.06);overflow:hidden}
+
+        /* Header / helmet crest */
+        .site-header{display:flex;align-items:center;gap:16px;margin-bottom:10px}
+        .crest{width:72px;height:72px;border-radius:50%;background:radial-gradient(circle at 30% 30%, #fff, var(--helmet) 20%, #8b4b12 60%);display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:inset 0 -6px 18px rgba(0,0,0,0.08);color:#fff}
+        .site-header h1{margin:0;font-size:22px;color:var(--turf);letter-spacing:0.6px}
+        .site-header .subtitle{margin:0;font-size:12px;color:var(--muted)}
+
+        /* Gridiron accent behind the form: subtle turf + yard lines */
+        .gridiron-bg{background:linear-gradient(180deg,var(--turf),var(--turf-2));border-radius:8px;padding:12px;color:#fff;margin-bottom:14px}
+        .gridiron-stripes{background-image:repeating-linear-gradient(90deg, rgba(255,255,255,0.06) 0 2px, transparent 2px 60px);padding:10px;border-radius:6px}
+
+        fieldset{margin-bottom:14px;padding:12px;border-radius:6px;border:1px solid rgba(0,0,0,0.04);background:#fff}
+        legend{font-weight:700;color:#1f5b2f}
+        label{display:block;margin:6px 0 2px;font-size:13px;color:#333}
+        input[type=text],input[type=number],input[type=date],select,textarea{width:100%;padding:8px;border:1px solid #d6dadd;box-sizing:border-box;border-radius:6px}
         .row{display:flex;gap:12px}
         .col{flex:1}
         .small{width:160px}
-        table{width:100%;border-collapse:collapse;margin-top:12px}
-        th,td{padding:8px;border:1px solid #e1e4e8;text-align:left}
+
+        /* Buttons */
+        .btn{display:inline-block;padding:8px 12px;border-radius:6px;text-decoration:none;color:#fff;background:#6c757d;border:0;font-size:14px}
+        .btn-primary{background:linear-gradient(180deg,var(--helmet),#a9571a);box-shadow:0 6px 18px rgba(197,106,28,0.18)}
+        .btn-outline{background:transparent;color:var(--turf);border:1px solid rgba(31,123,52,0.12)}
+        button.btn{cursor:pointer}
+
+        /* Table */
+        table{width:100%;border-collapse:collapse;margin-top:12px;background:#fff}
+        thead th{background:linear-gradient(90deg,#f7faf7,#eef8f1);color:#2b4f36;padding:10px;border-bottom:2px solid rgba(0,0,0,0.05);text-align:left}
+        th,td{padding:10px;border-bottom:1px solid #eef2ee;text-align:left;vertical-align:middle}
+        tbody tr:hover{background:rgba(25,105,43,0.04)}
+
+        /* Player cell with jersey (American football look) */
+        .player-cell{display:flex;align-items:center;gap:10px}
+        .jersey{width:52px;height:52px;border-radius:6px;background:linear-gradient(180deg,#fff,#8b4513);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 3px 8px rgba(0,0,0,0.12);border:2px solid rgba(255,255,255,0.08)}
+        .player-name{font-weight:800;color:#153a26}
+        .player-team{font-size:13px;color:#6b6b6b}
+
+        /* Position badge for American football roles */
+        .pos{display:inline-block;padding:6px 8px;border-radius:999px;color:#fff;font-weight:700;font-size:12px}
+        .pos.QB{background:#b22222}
+        .pos.RB{background:#ff8c00}
+        .pos.WR{background:#1e90ff}
+        .pos.TE{background:#8b4513}
+        .pos.OL{background:#6a5acd}
+        .pos.DL{background:#2f4f4f}
+        .pos.LB{background:#228b22}
+        .pos.CB{background:#20b2aa}
+        .pos.S{background:#4682b4}
+        .pos.K,.pos.P{background:#555}
+
         .actions a{margin-right:8px}
-        .msg{padding:8px;background:#e6ffed;border:1px solid #b7f0c3;margin-bottom:12px}
+        .msg{padding:10px;background:#fff8e1;border:1px solid #ffe29a;margin-bottom:12px;color:#6a4b00}
+
+        /* Responsive tweaks */
+        @media (max-width:900px){.row{flex-direction:column}.small{width:100%}}
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>Football Data Storage</h1>
+    <div class="site-header">
+        <div class="crest">🏈</div>
+        <div>
+            <h1>American Football Roster</h1>
+            <div class="subtitle">Roster & game logs</div>
+        </div>
+    </div>
     <?php if ($message): ?><div class="msg"><?php echo e($message); ?></div><?php endif; ?>
 
     <form method="post">
@@ -86,11 +140,11 @@ function e($v) { return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
             <div class="row">
                 <div class="col small"><label>Nationality</label><input name="nationality" type="text"></div>
                 <div class="col small"><label>Height</label><input name="height" type="text" placeholder="e.g., 1.82m"></div>
-                <div class="col small"><label>Preferred Foot</label>
-                    <select name="preferred_foot"><option value="Right">Right</option><option value="Left">Left</option><option value="Both">Both</option></select>
+                <div class="col small"><label>Preferred Hand</label>
+                    <select name="preferred_hand"><option value="Right">Right</option><option value="Left">Left</option></select>
                 </div>
                 <div class="col small"><label>Position</label>
-                    <select name="position"><option>GK</option><option>DEF</option><option>MID</option><option>FWD</option></select>
+                    <select name="position"><option>QB</option><option>RB</option><option>WR</option><option>TE</option><option>OL</option><option>DL</option><option>LB</option><option>CB</option><option>S</option><option>K</option><option>P</option></select>
                 </div>
                 <div class="col small"><label>Jersey Number</label><input name="jersey" type="number" min="0"></div>
             </div>
@@ -114,19 +168,19 @@ function e($v) { return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
         <fieldset>
             <legend>3. Player Stats (Season)</legend>
             <div class="row">
-                <div class="col small"><label>Matches Played</label><input name="matches" type="number"></div>
-                <div class="col small"><label>Minutes Played</label><input name="minutes" type="number"></div>
-                <div class="col small"><label>Goals</label><input name="goals" type="number"></div>
-                <div class="col small"><label>Assists</label><input name="assists" type="number"></div>
-                <div class="col small"><label>Clean Sheets</label><input name="clean_sheets" type="number"></div>
+                <div class="col small"><label>Games Played</label><input name="matches" type="number"></div>
+                <div class="col small"><label>Snaps Played</label><input name="minutes" type="number"></div>
+                <div class="col small"><label>Touchdowns</label><input name="goals" type="number"></div>
+                <div class="col small"><label>Receptions</label><input name="assists" type="number"></div>
+                <div class="col small"><label>Sacks</label><input name="clean_sheets" type="number"></div>
             </div>
             <div class="row">
-                <div class="col small"><label>Yellow Cards</label><input name="yellow" type="number"></div>
-                <div class="col small"><label>Red Cards</label><input name="red" type="number"></div>
-                <div class="col small"><label>Pass Accuracy (%)</label><input name="pass_accuracy" type="number" step="0.1"></div>
-                <div class="col small"><label>Shots on Target</label><input name="shots_on_target" type="number"></div>
+                <div class="col small"><label>Penalties</label><input name="yellow" type="number"></div>
+                <div class="col small"><label>Fumbles</label><input name="red" type="number"></div>
+                <div class="col small"><label>Completion (%)</label><input name="pass_accuracy" type="number" step="0.1"></div>
+                <div class="col small"><label>Passing Yards</label><input name="shots_on_target" type="number"></div>
                 <div class="col small"><label>Tackles</label><input name="tackles" type="number"></div>
-                <div class="col small"><label>Saves</label><input name="saves" type="number"></div>
+                <div class="col small"><label>Interceptions</label><input name="saves" type="number"></div>
             </div>
         </fieldset>
 
@@ -217,7 +271,7 @@ function e($v) { return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
             <input name="custom_tags" type="text">
         </fieldset>
 
-        <div style="text-align:right"><button type="submit">Save Record</button></div>
+        <div style="text-align:right"><button class="btn btn-primary" type="submit">Save Record</button></div>
     </form>
 
     <h2>Saved Records (<?php echo count($records); ?>)</h2>
@@ -230,13 +284,22 @@ function e($v) { return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
             <?php foreach (array_reverse($records) as $r): ?>
                 <tr>
                     <td><?php echo e($r['created_at'] ?? ''); ?></td>
-                    <td><?php echo e($r['full_name'] ?? $r['player_id'] ?? '—'); ?></td>
+                    <td>
+                        <div class="player-cell">
+                            <div class="jersey"><?php echo e($r['jersey'] ?? ''); ?></div>
+                            <div>
+                                <div class="player-name"><?php echo e($r['full_name'] ?? $r['player_id'] ?? '—'); ?></div>
+                                <div class="player-team"><?php echo e($r['team_name'] ?? ''); ?></div>
+                            </div>
+                        </div>
+                    </td>
                     <td><?php echo e($r['team_name'] ?? ''); ?></td>
-                    <td><?php echo e($r['position'] ?? ''); ?></td>
+                    <?php $pos = $r['position'] ?? ''; ?>
+                    <td><span class="pos <?php echo htmlspecialchars($pos); ?>"><?php echo e($pos); ?></span></td>
                     <td><?php echo e($r['age'] ?? ''); ?></td>
                     <td class="actions">
-                        <a href="?view=<?php echo e($r['id']); ?>">View</a>
-                        <a href="?delete=<?php echo e($r['id']); ?>" onclick="return confirm('Delete this record?')">Delete</a>
+                        <a class="btn btn-outline" href="?view=<?php echo e($r['id']); ?>">View</a>
+                        <a class="btn" style="background:#d9534f" href="?delete=<?php echo e($r['id']); ?>" onclick="return confirm('Delete this record?')">Delete</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
