@@ -43,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $jerseyRaw = $_POST['jersey'] ?? '';
     $jersey = trim((string)$jerseyRaw);
     $id = trim((string)($_POST['id'] ?? ''));
+    $team_color = trim((string)($_POST['team_color'] ?? ''));
 
     if ($full === '') $errors[] = 'Full name is required.';
     if ($team === '') $errors[] = 'Team name is required.';
@@ -50,12 +51,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($jersey === '') $errors[] = 'Jersey number is required.';
 
     if (empty($errors)) {
-        $record = [
-            'full_name' => $full,
-            'team_name' => $team,
-            'position'  => $pos,
-            'jersey'    => $jersey,
-        ];
+      // normalize/validate color (expect hex like #RRGGBB)
+      if (!preg_match('/^#[0-9A-Fa-f]{6}$/', $team_color)) {
+        // if updating, preserve existing color when present
+        $existingColor = '';
+        if ($id !== '') {
+          foreach ($records as $r) if (isset($r['id']) && $r['id'] === $id) { $existingColor = $r['team_color'] ?? ''; break; }
+        }
+        $team_color = $existingColor ?: '#cccccc';
+      }
+
+      $record = [
+        'full_name' => $full,
+        'team_name' => $team,
+        'position'  => $pos,
+        'jersey'    => $jersey,
+        'team_color' => $team_color,
+      ];
 
         if ($id !== '') {
             // Update existing if found
@@ -113,6 +125,7 @@ if (!empty($_GET['view'])) {
     .msg{background:#e9f7ef;border:1px solid #c8eed9;padding:8px;margin-bottom:8px}
     .err{background:#fff0f0;border:1px solid #f2c6c6;padding:8px;margin-bottom:8px}
     a.del{color:#c0392b;text-decoration:none;margin-left:8px}
+    .swatch{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:6px;vertical-align:middle;border:1px solid rgba(0,0,0,0.15)}
   </style>
 </head>
 <body>
@@ -134,6 +147,7 @@ if (!empty($_GET['view'])) {
       <?php endforeach; ?>
     </select>
     <input name="jersey" class="small" type="number" min="0" placeholder="#" value="<?php echo e($_POST['jersey'] ?? $editing['jersey'] ?? ''); ?>">
+    <input type="color" name="team_color" title="Team color" value="<?php echo e($_POST['team_color'] ?? $editing['team_color'] ?? '#cccccc'); ?>">
     <button type="submit">Save</button>
   </form>
 
@@ -148,7 +162,7 @@ if (!empty($_GET['view'])) {
         <tr>
           <td><?php echo e($r['created_at'] ?? ''); ?></td>
           <td><?php echo e($r['full_name'] ?? ''); ?></td>
-          <td><?php echo e($r['team_name'] ?? ''); ?></td>
+          <td><span class="swatch" style="background: <?php echo e($r['team_color'] ?? '#cccccc'); ?>"></span><?php echo e($r['team_name'] ?? ''); ?></td>
           <td><?php echo e($r['position'] ?? ''); ?></td>
           <td><?php echo e($r['jersey'] ?? ''); ?></td>
           <td>
@@ -168,7 +182,7 @@ if (!empty($_GET['view'])) {
     <table>
       <tbody>
         <tr><th style="width:140px">Full name</th><td><?php echo e($editing['full_name'] ?? ''); ?></td></tr>
-        <tr><th>Team</th><td><?php echo e($editing['team_name'] ?? ''); ?></td></tr>
+        <tr><th>Team</th><td><span class="swatch" style="background: <?php echo e($editing['team_color'] ?? '#cccccc'); ?>"></span><?php echo e($editing['team_name'] ?? ''); ?></td></tr>
         <tr><th>Position</th><td><?php echo e($editing['position'] ?? ''); ?></td></tr>
         <tr><th>Jersey</th><td><?php echo e($editing['jersey'] ?? ''); ?></td></tr>
         <tr><th>Added</th><td><?php echo e($editing['created_at'] ?? ''); ?></td></tr>

@@ -1,18 +1,20 @@
 [
     {
-        "id": "p693b18838b1165.64791221",
         "full_name": "Charles Stover",
         "team_name": "Barons",
         "position": "QB",
         "jersey": "56",
+        "team_color": "#461502",
+        "id": "p693b18838b1165.64791221",
         "created_at": "2025-12-11T20:16:19+01:00"
     },
     {
-        "id": "p6941960b249884.21763460",
         "full_name": "Jed Oinker",
         "team_name": "Hayes",
         "position": "DEF",
         "jersey": "23",
+        "team_color": "#ef7c2c",
+        "id": "p6941960b249884.21763460",
         "created_at": "2025-12-16T18:25:31+01:00"
     }
 ]
