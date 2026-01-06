@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <h1>CRUD APPLICATION IN PHP</h1>
-    <div class ="table table-hover table-bordered table-striped">
-        <table>
+    <h1 id="main_title">CRUD APPLICATION IN PHP</h1>
+    <div class="container">
+    <table class ="table table-hover table-bordered table-striped">
             <thead>
                 <tr>
                     <th>ID</th>
