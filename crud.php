@@ -12,7 +12,7 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>FIRST NAME</th>
+                    <th>FIRST NAMe</th>
                     <th>LAST NAME</th>
                     <th>AGE</th>
                 </tr>
