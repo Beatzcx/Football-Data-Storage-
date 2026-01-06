@@ -9,6 +9,7 @@
 <body>
     <h1 id="main_title">CRUD APPLICATION IN PHP</h1>
     <div class="container">
+        <h2>ALL STUDENTS</h2>
     <table class ="table table-hover table-bordered table-striped">
             <thead>
                 <tr>
