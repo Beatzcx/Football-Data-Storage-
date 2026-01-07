@@ -11,7 +11,7 @@
 <body>
     <div class="container">
     
-        <h2 id = main_title> ALL STUDENTS</h2>
+        <h2 id = main_title>CRUD APPLICATION IN PHP</h2>
     <table class ="table table-hover table-bordered table-striped">
             <thead>
                 <tr>
