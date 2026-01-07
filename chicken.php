@@ -11,8 +11,8 @@
 <body>
     <div class="container">
     
-        <h2>ALL STUDENTS</h2>
-    <table class = "main table table-hover table-bordered table-striped">
+        <h2 id = main_title> ALL STUDENTS</h2>
+    <table class ="table table-hover table-bordered table-striped">
             <thead>
                 <tr>
                     <th>ID</th>
