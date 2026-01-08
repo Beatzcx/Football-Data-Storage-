@@ -1,6 +1,10 @@
 <?php include 'header.php'; ?>
 <?php include 'dbcon.php'; ?>
 
+
+    <div class = "box1">
+    <h2>ALL STUDENTS </h2>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">ADD STUDENTS</button>
             <thead>
                 <tr>
                     <th>ID</th>
@@ -34,27 +38,39 @@
                           <?php
                     }
                 }
+
+        
                 
                 ?>
-                <tr>
-                 <td>3</td>
-                 <td>John</td>
-                    <td>Doe</td>
-                    <td>25</td>
-                </tr>
-                <tr>
-                 <td>4</td>
-                 <td>Jane</td>
-                    <td>Smith</td>
-                    <td>30</td>
-                </tr>
-                <tr>
-                 <td>5</td>
-                 <td>Emily</td>
-                    <td>Jones</td>
-                    <td>22</td>
-                </tr>
-            </tbody>
-        </table>
+                <!-- Modal -->
+                 <form>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">ADD STUDENTS</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+            <label for = "f_name"> first name</label>
+            <input type="text" class="form-control" name="f_name">
+        </div>
+        <div class="form-group">
+            <label for = "l_name"> last name</label>
+            <input type="text" class="form-control" name="l_name">
+      </div>
+       <div class="form-group">
+            <label for = "age"> age</label>
+            <input type="text" class="form-control" name="age">
+      </div>
+              
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">ADD</button>
+      </div>
     </div>
-</body>
+  </div>
+</div>
+</form>
+               <?php include 'footer.php'; ?>
