@@ -12,8 +12,7 @@
                     <th>LAST NAME</th>
                     <th>AGE</th>
                 </tr>
-            </thead>
-            <tbody>
+      
                 <?php
                 $query = "SELECT * FROM `students`";
 
@@ -42,8 +41,11 @@
         
                 
                 ?>
+                
+<h6><?php if(isset($_GET['messages'])) { echo $_GET['messages']; } ?></h6>
+
                 <!-- Modal -->
-                 <form>
+                 <form action = "insert_data.php" method="POST">
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -53,21 +55,21 @@
       </div>
       <div class="modal-body">
         <div class="form-group">
-            <label for = "f_name"> first name</label>
+            <label for = "f_name"> First Name</label>
             <input type="text" class="form-control" name="f_name">
         </div>
         <div class="form-group">
-            <label for = "l_name"> last name</label>
+            <label for = "l_name"> Last Name</label>
             <input type="text" class="form-control" name="l_name">
       </div>
        <div class="form-group">
-            <label for = "age"> age</label>
+            <label for = "age"> Age</label>
             <input type="text" class="form-control" name="age">
       </div>
               
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">ADD</button>
+        <input type="submit" class="btn btn-primary" name="add_student" value="ADD">
       </div>
     </div>
   </div>
