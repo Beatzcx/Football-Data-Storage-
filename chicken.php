@@ -23,20 +23,18 @@
                 {
                     while($row = mysqli_fetch_assoc($result))
                     {
-                        $id = $row['id'];
-                        $first_name = $row['first_name'];
-                        $last_name = $row['last_name'];
-                        $age = $row['age'];
+                        ?>
+                       <tr>
+                        <td> <?php echo $row['id']; ?></td>
+                        <td> <?php echo $row['first_name']; ?> </td>
+                        <td> <?php echo $row['last_name']; ?> </td>
+                        <td> <?php echo $row['age']; ?> </td>
+                          </tr>
 
-                        echo "<tr>
-                        <td>$id</td>
-                        <td>$first_name</td>
-                        <td>$last_name</td>
-                        <td>$age</td>
-                        </tr>";
+                          <?php
                     }
                 }
-
+                
                 ?>
                 <tr>
                  <td>3</td>
