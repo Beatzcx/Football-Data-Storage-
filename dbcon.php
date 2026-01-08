@@ -2,7 +2,7 @@
 
 define("HOSTNAME", "localhost");
 define("USERNAME", "root");
-define("PASSWORD", "");
+define("PASSWORD", "password");
 define("DATABASE", "football_data_storage");
 
 try {
