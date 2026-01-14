@@ -1,4 +1,8 @@
 <?php include 'header.php'; ?>
+
+<?php
+// deletion is handled via a separate endpoint to avoid header issues when header.php already sent output
+?>
 <?php include 'dbcon.php'; ?>
 
 
@@ -14,6 +18,8 @@
                     <th>FIRST NAME</th>
                     <th>LAST NAME</th>
                     <th>AGE</th>
+                    <th>UPDATE</th>
+                    <th>DELETE</th>
                 </tr>
       
                 <?php
@@ -35,6 +41,8 @@
                         <td> <?php echo $row['first_name']; ?> </td>
                         <td> <?php echo $row['last_name']; ?> </td>
                         <td> <?php echo $row['age']; ?> </td>
+                        <td> <a href="edit_student.php?id=<?php echo $row['id']; ?>" class="btn btn-success">UPDATE</a> </td>
+                        <td> <a href="delete_student.php?id=<?php echo $row['id']; ?>" class="btn btn-danger" onclick="return confirm('Delete this student?')">DELETE</a> </td>
                           </tr>
 
                           <?php

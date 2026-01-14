@@ -29,3 +29,31 @@ h6{
     float: left;
     margin-bottom: 20px;
 }
+
+/* Table and layout improvements */
+.box1{
+    max-width:1000px;
+    margin:20px auto;
+    background:#fff;
+    padding:16px;
+    border-radius:8px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.05);
+}
+
+.box1 h2{margin-top:0;margin-bottom:12px}
+
+.box1 table{width:100%;border-collapse:collapse}
+.box1 th, .box1 td{padding:10px;border-bottom:1px solid #eee}
+
+.btn{padding:6px 10px;border-radius:4px;text-decoration:none}
+.btn-primary{background:#2d89ef;color:#fff;border:0}
+.btn-success{background:#28a745;color:#fff;border:0}
+.btn-danger{background:#dc3545;color:#fff;border:0}
+.btn-secondary{background:#6c757d;color:#fff;border:0}
+
+.form-group{margin-bottom:8px}
+.form-control{width:100%;padding:8px;border:1px solid #ccc;border-radius:4px}
+
+h6{color:#c0392b;text-align:center}
+
+.edit-form{max-width:600px}
