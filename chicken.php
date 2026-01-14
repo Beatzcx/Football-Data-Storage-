@@ -6,7 +6,7 @@
     <h2>ALL STUDENTS </h2>
     <link rel="stylesheet" type="text/css" href="style.css">
 
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">ADD STUDENTS</button>
+    <button id="hi", class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">ADD STUDENTS</button>
             <thead>
                 
                 <tr>

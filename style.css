@@ -25,3 +25,7 @@ h6{
     margin-top: 20px;
     color: red;
 }
+#hi {
+    float: left;
+    margin-bottom: 20px;
+}
