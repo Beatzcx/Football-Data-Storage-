@@ -1,7 +1,6 @@
 <?php include 'header.php'; ?>
 
 <?php
-// deletion is handled via a separate endpoint to avoid header issues when header.php already sent output
 ?>
 <?php include 'dbcon.php'; ?>
 
