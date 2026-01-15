@@ -24,7 +24,7 @@ echo 'User Registered Successfully.';
 
 
 <div>
-<form action="register.php" method="post">
+<form action="registration.php" method="post">
     <div class="container">
     <h1>User Registration</h1>
     <label for="username">Username:</label><br>
@@ -40,7 +40,7 @@ echo 'User Registered Successfully.';
     <label for="password">Password:</label><br>
     <input type="password" id="password" name="password" required><br><br>
     
-    <input type="submit" value="Register">
+    <input type="submit" name="create" value="Register">
 
 
 
